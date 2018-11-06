@@ -24,6 +24,8 @@ class Configuration():
     selected_printer = None #No printer select
     enable_hardware_buttons = False #Enable hardware buttons
     enable_email_logging = False # Should we log outgoing emails?
+    mp3_dir = None # added a dir with mp3s to play a random file
+
 
     #init
     def __init__(self,configuration_file_name):
@@ -74,6 +76,7 @@ class Configuration():
         if "selected_printer" in config.keys(): self.selected_printer = config["selected_printer"]
         if "enable_hardware_buttons" in config.keys():  self.enable_hardware_buttons = config["enable_hardware_buttons"]
         if "enable_email_logging" in config.keys(): self.enable_email_logging = config["enable_email_logging"]
+        if "local_mp3_dir" in config.keys():  self.mp3_dir = config["local_mp3_dir"]
 
 
         return self.is_valid
@@ -101,6 +104,7 @@ class Configuration():
             "selected_printer": self.selected_printer,
             "enable_hardware_buttons": self.enable_hardware_buttons,
             "enable_email_logging" : self.enable_email_logging
+            "local_mp3_dir" : self.mp3_dir,
         }
         try:
             with open(self.config_file,'w') as config:

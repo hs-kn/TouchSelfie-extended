@@ -145,7 +145,7 @@ class UserInterface():
         install_key_binding("configure",lambda *args: self.long_press_cb(self))
         install_key_binding("send_print",lambda *args: self.send_print())
         ## Bind keyboard keys to actions
-        
+
         self.full_screen = config.full_screen
         if config.full_screen:
             self.root.attributes("-fullscreen",True)
@@ -181,7 +181,7 @@ class UserInterface():
             self.print_btn.configure(background= 'black')
 
         self.send_emails = send_emails
-        
+
         #Create sendmail Button
         if self.send_emails:
             mail_image = Image.open(EMAIL_BUTTON_IMG)
@@ -190,7 +190,7 @@ class UserInterface():
             self.mail_btn  = Button(self.root,image = self.mail_imagetk, height=h, width=w, command=self.send_email )
             self.mail_btn.place(x=SCREEN_W-w-2, y=0)
             self.mail_btn.configure(background = 'black')
-            
+
         #Create image_effects button
         self.image_effects = image_effects
         self.selected_image_effect='none'
@@ -201,7 +201,7 @@ class UserInterface():
             self.effects_btn = Button(self.root, image = self.effects_imagetk, height=h, width=w, command=self.__choose_effect)
             self.effects_btn.place(x=SCREEN_W-w-2,y=int((SCREEN_H-h)/2))
             self.effects_btn.configure(background = 'black')
-            
+
         #Create status line
         self.status_lbl = Label(self.root, text="", font=("Helvetica", 20))
         self.status_lbl.config(background='black', foreground='white')
@@ -500,7 +500,7 @@ class UserInterface():
                 self.status("")
                 snap_filename = 'animation.gif'
                 self.last_picture_mime_type = 'image/gif'
-            
+
             # cancel image_effect (hotfix: effect was not reset to 'none' after each shot)
             self.selected_image_effect = 'none'
 
@@ -682,6 +682,14 @@ class UserInterface():
                 self.camera.remove_overlay(overlay)
 
 
+    def rndmp3 ():
+        if os.path.exists(config.mp3_dir):
+            randomfile = random.choice(os.listdir(config.mp3_dir))
+            file =  config.mp3_dir + randomfile
+            os.system ('mplayer' + file)
+        else:
+            print "Error : mp3_dir %s doesn't exist"% config.mp3_dir
+
 
     def refresh_auth(self):
         """ refresh the oauth2 service (regularly called)"""
@@ -842,7 +850,7 @@ class UserInterface():
         status = "%s (%s) %s %s\n"%(ts,sendcode,mail_address,file_path)
         sendmail_log.write(status)
         sendmail_log.close()
-        
+
     def __choose_effect(self):
         """Displays a screen from where user can choose a builtin effect
         This modifies self.selected_image_effect
@@ -858,13 +866,13 @@ class UserInterface():
             top.attributes("-fullscreen",True)
         top.geometry('%dx%d+0+0'%(self.size[0],self.size[1]))
         top.configure(background='black')
-        
+
         #layout
         NCOLS=4
-        NROWS=3       
+        NROWS=3
         window_width = self.size[0]
         window_height = self.size[1]
-        
+
         button_size = min(int(window_width/NCOLS),int(window_height/NROWS))
         button_images =[]
         def cb_factory(img_effect):
@@ -873,7 +881,7 @@ class UserInterface():
                 print "Effect",img_effect,"selected"
                 top.destroy()
             return mod_effect
-            
+
         effect_buttons=[]
         for index in range(len(IMAGE_EFFECTS_LIST)):
             effect = IMAGE_EFFECTS_LIST[index]
@@ -897,9 +905,9 @@ class UserInterface():
         top.columnconfigure(NCOLS+1,weight=1)
         top.rowconfigure(0, weight=1)
         top.rowconfigure(NROWS+1, weight=1)
-        
+
         self.root.wait_window(top)
-        
+
 if __name__ == '__main__':
     import argparse
     parser = argparse.ArgumentParser()
