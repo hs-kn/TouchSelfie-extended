@@ -159,7 +159,7 @@ IMAGE_EFFECTS = {
 # 'pull_up_down' activates a pull_up or a pull_down on the GPIO pin itself (no external resistor needed)
 # 'active_state' should be 1 or 0: this is the value returned by the GPIO when switch is activated
 HARDWARE_BUTTONS = {
-    "button_pins": [10,8,12], # Change this and the following to reflect your hardware buttons
+    "button_pins": [20,21,26], # Change this and the following to reflect your hardware buttons
     "pull_up_down": "pull_down",        # pull_up or pull_down
     "active_state": 1         # active 1 GPIO (pull_down with switch to VDD)
 }

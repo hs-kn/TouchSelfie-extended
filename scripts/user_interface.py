@@ -13,6 +13,7 @@ from tkImageLabel import ImageLabel
 from constants import *
 import time
 import traceback
+import random
 
 try:
     import cups
@@ -280,6 +281,7 @@ class UserInterface():
                 btn.place(x=X_,y=Y)
                 btn.configure(background = 'black')
                 X_ = X_ + w + padding
+
 
         #Camera
         self.camera = mycamera.PiCamera()
@@ -686,7 +688,7 @@ class UserInterface():
         if os.path.exists(config.mp3_dir):
             randomfile = random.choice(os.listdir(config.mp3_dir))
             file =  config.mp3_dir + randomfile
-            os.system ('mplayer' + file)
+            os.system ('aplay' + file)
         else:
             print "Error : mp3_dir %s doesn't exist"% config.mp3_dir
 

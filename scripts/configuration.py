@@ -103,8 +103,8 @@ class Configuration():
             "enable_effects": self.enable_effects,
             "selected_printer": self.selected_printer,
             "enable_hardware_buttons": self.enable_hardware_buttons,
-            "enable_email_logging" : self.enable_email_logging
-            "local_mp3_dir" : self.mp3_dir,
+            "enable_email_logging" : self.enable_email_logging,
+            "local_mp3_dir" : self.mp3_dir
         }
         try:
             with open(self.config_file,'w') as config:
