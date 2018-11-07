@@ -6,14 +6,14 @@
 RPI_GPIO_EXISTS = True
 
 # Predefine variables
-BUTTONS_PINS = []
+BUTTONS_PINS = [38]
 BUTTONS_MODE = "pull_up"
 BUTTON_IS_ACTIVE = 1
 
 try:
     import RPi.GPIO as GPIO
     ## GPIO pin definition for hardware buttons
-    BUTTONS_PINS = [20,21,26]
+    BUTTONS_PINS = [38]
     BUTTONS_MODE = GPIO.PUD_DOWN # switch to VDD, configure io in pulldown
     BUTTON_IS_ACTIVE = 1         # active 1 GPIO (pull_down with switch to VDD)
 except ImportError:

@@ -364,9 +364,10 @@ class UserInterface():
             self.status('')
             btn_state = self.buttons.state()
             if btn_state == 1:
-                self.snap("None")
+					self.snap("Four")
+					self.send_print()                               
             elif btn_state == 2:
-                self.snap("Four")
+                 self.snap("None")
             elif btn_state == 3:
                 self.snap("Animation")
         self.poll_after_id = self.root.after(self.poll_period, self.run_periodically)
@@ -477,6 +478,8 @@ class UserInterface():
                 snapshot.save('collage.jpg')
                 snap_filename = 'collage.jpg'
                 self.last_picture_mime_type = 'image/jpg'
+
+					#TODO Print 
 
             elif mode == 'Animation':
                 # animated gifs
@@ -788,6 +791,7 @@ class UserInterface():
             cups.setUser(getpass.getuser())
             conn.printFile(default_printer, self.last_picture_filename, self.last_picture_title, {'fit-to-page':'True'})
             print 'Sending to printer...'
+            # TODO warten
         except:
             print 'print failed :: '
             self.status("Print failed :(")
