@@ -162,7 +162,7 @@ class UserInterface():
         if window_size is not None:
             self.size=window_size
         else:
-            self.size=(640,480)
+            self.size=(800,480)
         self.root.geometry('%dx%d+0+0'%(self.size[0],self.size[1]))
 
 
@@ -352,59 +352,79 @@ class UserInterface():
         self.status_lbl['text'] = status_text
         self.root.update()
 
+    def resize_image(self, logo_image, baseheight):
+        hpercent = (baseheight / float(logo_image.size[1]))
+        wsize = int((float(logo_image.size[0]) * float(hpercent)))
+        img = logo_image.resize((wsize, baseheight), Image.ANTIALIAS)
+        return img 
 
     def welcome_page(self):
         """Show Welcome Page"""
         """SCREEN_H,SCREEN_W"""
-        
+
         # Logo in the lower right corner
-        logo_image = Image.open("/home/pi/workspace/TouchSelfie-extended/scripts/ressources/logo_fh_600.png")        
-        self.logo_imagetk = ImageTk.PhotoImage(logo_image)
+        logo_image = Image.open("/home/pi/workspace/TouchSelfie-extended/scripts/ressources/logo_fh_600.png")               
+        self.logo_imagetk = ImageTk.PhotoImage(self.resize_image(logo_image, 100))
         self.logo_lbl = Label(self.root, image=self.logo_imagetk, borderwidth=0)
-        self.logo_lbl.place(x=-20, y= SCREEN_H - 280)
+        self.logo_lbl.place(x=5, y= SCREEN_H - 100)
 
         # Intro
-        self.welcome_lbl = Label(self.root, text="Push the big red button", font=("Lato", 48, "bold"))
+        self.welcome_lbl = Label(self.root, text="Push the big red button", font=("Lato", 36, "bold"))
         self.welcome_lbl.config(background='black', foreground='white')
-        self.welcome_lbl.place(x=SCREEN_W/2-300, y= 200)
+        self.welcome_lbl.place(x=SCREEN_W/2-270, y= 100)        
 
-        # Intro
-        self.warn_lbl = Label(self.root, text="Achtung: Eltern haften fuer Ihre Kinder", font=("Lato", 14))
+        # warn
+        self.warn_lbl = Label(self.root, text="Achtung: Eltern haften fuer Ihre Kinder", font=("Lato", 12))
         self.warn_lbl.config(background='black', foreground='white')
-        self.warn_lbl.place(x=SCREEN_W/2-140, y= 300)
+        self.warn_lbl.place(x=SCREEN_W/2-140, y= 160)
         
         # Image
         welcome_image = Image.open("/home/pi/workspace/TouchSelfie-extended/scripts/ressources/welcome_r.jpg")        
-        self.welcome_imagetk = ImageTk.PhotoImage(welcome_image)
-        self.welcomeI_lbl = Label(self.root, image=self.welcome_imagetk, borderwidth=0)
-        self.welcomeI_lbl.place(x=SCREEN_W-500 , y= SCREEN_H - 430 )
-        
+        self.welcome_imagetk = ImageTk.PhotoImage(self.resize_image(welcome_image, 260))
+        self.welcome_img_lbl = Label(self.root, image=self.welcome_imagetk, borderwidth=0)
+        self.welcome_img_lbl.place(x=SCREEN_W-320 , y= SCREEN_H - 290 )        
+        self.root.update()
+
+    def hide_welcome_screen(self):        
+        self.welcome_lbl["text"] = ""
+        self.warn_lbl["text"] = ""
+        self.logo_lbl.destroy()
+        self.welcome_img_lbl.destroy()
+ 
+ 
+    def show_message(self, status_text):
+        """Update the application status line with status_text"""
+        self.welcome_lbl['text'] = status_text
+        self.welcome_lbl.place(x=SCREEN_W/2-220, y= SCREEN_H/2-36)  
+        self.root.update()
+
+    def status(self, status_text):
+        """Update the application status line with status_text"""
+        self.status_lbl['text'] = status_text
         self.root.update()
 
     def start_ui(self):
         """Start the user interface and call Tk::mainloop()"""
         self.welcome_page()
         self.auth_after_id = self.root.after(100, self.refresh_auth)
-        self.poll_after_id = self.root.after(self.poll_period, self.run_periodically)
-        
+        self.poll_after_id = self.root.after(self.poll_period, self.run_periodically)        
         self.root.mainloop()
 
 
     def run_periodically(self):
-        """hardware poll function launched by start_ui"""                       
+        """hardware poll function launched by start_ui"""                              
+                        
         if not self.suspend_poll == True:            
             self.status('')
-            btn_state = self.buttons.state()
+            btn_state = self.buttons.state()            
             if btn_state == 1:
-					self.snap("Four")
-					self.send_print()
-					show_welcome = False                               
+                self.hide_welcome_screen()
+                self.snap("Four")                                                
+                self.send_print()					                   
             elif btn_state == 2:
-                 self.snap("None")
-                 show_welcome = False
+                 self.snap("None")            
             elif btn_state == 3:
-                self.snap("Animation")
-                show_welcome = False
+                self.snap("Animation")                
                 
         self.poll_after_id = self.root.after(self.poll_period, self.run_periodically)
 
@@ -809,6 +829,7 @@ class UserInterface():
 
 
     def send_print(self):
+        self.show_message("Printing... Please wait")
         try:
             conn = cups.Connection()
             printers = conn.getPrinters()
@@ -817,7 +838,8 @@ class UserInterface():
             cups.setUser(getpass.getuser())
             conn.printFile(default_printer, self.last_picture_filename, self.last_picture_title, {'fit-to-page':'True'})
             print 'Sending to printer...'
-            # TODO warten
+            time.sleep(20)            
+            self.show_message("")
         except:
             print 'print failed :: '
             self.status("Print failed :(")
