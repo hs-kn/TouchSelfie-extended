@@ -352,6 +352,23 @@ class UserInterface():
         self.status_lbl['text'] = status_text
         self.root.update()
 
+    def welcome_page(self):
+        """Update the application status line with status_text"""
+        self.status_lbl['text'] = "Push the button"
+        
+         logo_image = Image.open("/home/pi/workspace/TouchSelfie-extended/ressources/logo.jpeg")
+            w,h = effects_image.size
+            self.logo_imagetk = ImageTk.PhotoImage(logo_image)
+            self.logo_lbl = Label(self.root, logo_imagetk)
+            self.logo_lbl.place(x=0 + 10, y=0 + 10)
+
+        #Create status line
+        self.welcome_lbl = Label(self.root, text="Feinheit", font=("Lato", 20))
+        self.welcome_lbl.config(background='black', foreground='white')
+        self.welcome_lbl.place(x=0 + 100, y=0 + 100)
+        
+        self.root.update()
+
     def start_ui(self):
         """Start the user interface and call Tk::mainloop()"""
         self.auth_after_id = self.root.after(100, self.refresh_auth)
@@ -362,16 +379,23 @@ class UserInterface():
 
     def run_periodically(self):
         """hardware poll function launched by start_ui"""
+        self.welcome_page()
+        show_welcome = True
         if not self.suspend_poll == True:
-            self.status('')
+            if show_welcome == False:
+                self.status('')
             btn_state = self.buttons.state()
             if btn_state == 1:
 					self.snap("Four")
-					self.send_print()                               
+					self.send_print()
+					show_welcome = False                               
             elif btn_state == 2:
                  self.snap("None")
+                 show_welcome = False
             elif btn_state == 3:
                 self.snap("Animation")
+                show_welcome = False
+                
         self.poll_after_id = self.root.after(self.poll_period, self.run_periodically)
 
     def snap(self,mode="None"):
