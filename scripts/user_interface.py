@@ -688,16 +688,6 @@ class UserInterface():
             if overlay != None:
                 self.camera.remove_overlay(overlay)
 
-
-    def rndmp3 ():
-        if os.path.exists(config.mp3_dir):
-            randomfile = random.choice(os.listdir(config.mp3_dir))
-            file =  config.mp3_dir + randomfile
-            os.system ('aplay' + file)
-        else:
-            print "Error : mp3_dir %s doesn't exist"% config.mp3_dir
-
-
     def refresh_auth(self):
         """ refresh the oauth2 service (regularly called)"""
         # useless if we don't need image upload
