@@ -205,9 +205,9 @@ class UserInterface():
             self.effects_btn.configure(background = 'black')
 
         #Create status line
-        self.status_lbl = Label(self.root, text="", font=("Helvetica", 20))
+        self.status_lbl = Label(self.root, text="", font=("Lato", 20))
         self.status_lbl.config(background='black', foreground='white')
-        self.status_lbl.place(x=0 + 10, y=0)
+        self.status_lbl.place(x=0 + 10, y=0)   
 
         #State variables
         self.signed_in = False
@@ -352,25 +352,38 @@ class UserInterface():
         self.status_lbl['text'] = status_text
         self.root.update()
 
-    def welcome_page(self):
-        """Update the application status line with status_text"""
-        self.status_lbl['text'] = "Push the button"
-        
-         logo_image = Image.open("/home/pi/workspace/TouchSelfie-extended/ressources/logo.jpeg")
-            w,h = effects_image.size
-            self.logo_imagetk = ImageTk.PhotoImage(logo_image)
-            self.logo_lbl = Label(self.root, logo_imagetk)
-            self.logo_lbl.place(x=0 + 10, y=0 + 10)
 
-        #Create status line
-        self.welcome_lbl = Label(self.root, text="Feinheit", font=("Lato", 20))
+    def welcome_page(self):
+        """Show Welcome Page"""
+        """SCREEN_H,SCREEN_W"""
+        
+        # Logo in the lower right corner
+        logo_image = Image.open("/home/pi/workspace/TouchSelfie-extended/scripts/ressources/logo_fh_600.png")        
+        self.logo_imagetk = ImageTk.PhotoImage(logo_image)
+        self.logo_lbl = Label(self.root, image=self.logo_imagetk, borderwidth=0)
+        self.logo_lbl.place(x=-20, y= SCREEN_H - 280)
+
+        # Intro
+        self.welcome_lbl = Label(self.root, text="Push the big red button", font=("Lato", 48, "bold"))
         self.welcome_lbl.config(background='black', foreground='white')
-        self.welcome_lbl.place(x=0 + 100, y=0 + 100)
+        self.welcome_lbl.place(x=SCREEN_W/2-300, y= 200)
+
+        # Intro
+        self.warn_lbl = Label(self.root, text="Achtung: Eltern haften fuer Ihre Kinder", font=("Lato", 14))
+        self.warn_lbl.config(background='black', foreground='white')
+        self.warn_lbl.place(x=SCREEN_W/2-140, y= 300)
+        
+        # Image
+        welcome_image = Image.open("/home/pi/workspace/TouchSelfie-extended/scripts/ressources/welcome_r.jpg")        
+        self.welcome_imagetk = ImageTk.PhotoImage(welcome_image)
+        self.welcomeI_lbl = Label(self.root, image=self.welcome_imagetk, borderwidth=0)
+        self.welcomeI_lbl.place(x=SCREEN_W-500 , y= SCREEN_H - 430 )
         
         self.root.update()
 
     def start_ui(self):
         """Start the user interface and call Tk::mainloop()"""
+        self.welcome_page()
         self.auth_after_id = self.root.after(100, self.refresh_auth)
         self.poll_after_id = self.root.after(self.poll_period, self.run_periodically)
         
@@ -378,12 +391,9 @@ class UserInterface():
 
 
     def run_periodically(self):
-        """hardware poll function launched by start_ui"""
-        self.welcome_page()
-        show_welcome = True
-        if not self.suspend_poll == True:
-            if show_welcome == False:
-                self.status('')
+        """hardware poll function launched by start_ui"""                       
+        if not self.suspend_poll == True:            
+            self.status('')
             btn_state = self.buttons.state()
             if btn_state == 1:
 					self.snap("Four")
@@ -773,7 +783,7 @@ class UserInterface():
                 main_frame=Frame(self.tkkb)
                 consent_frame = Frame(self.tkkb, bg='white', pady=20)
                 consent_var.set(1)
-                consent_cb = Checkbutton(consent_frame,text="Ok to log my mail address", variable=consent_var, font="Helvetica",bg='white', fg='black')
+                consent_cb = Checkbutton(consent_frame,text="Ok to log my mail address", variable=consent_var, font="Lato",bg='white', fg='black')
                 consent_cb.pack(fill=X)
                 consent_frame.pack(side=BOTTOM,fill=X)
                 main_frame.pack(side=TOP,fill=Y)
@@ -916,7 +926,7 @@ class UserInterface():
                 button = Button(top, image = button_img_tk, text=effect, height=button_size, width=button_size, background = 'black',command=cb_factory(effect))
             except:
                 print "Error for effect",effect,"trying text button"
-                button = Button(top, text=effect, background = "#333333",fg="white",font='Helvetica',command=cb_factory(effect))
+                button = Button(top, text=effect, background = "#333333",fg="white",font='Lato',command=cb_factory(effect))
             row = int(index/NCOLS)
             col = index % NCOLS
             button.grid(row=row+1,column=col+1) #+1 -> leave one empty row and one empty column for centering
