@@ -3,7 +3,7 @@ New interface for the photobooth
 
 @author: Laurent Alacoque 2o18
 """
-
+ 
 from Tkinter import *
 import tkMessageBox
 from PIL import ImageTk,Image
@@ -14,6 +14,7 @@ from constants import *
 import time
 import traceback
 import random
+import Image
 
 try:
     import cups
@@ -355,6 +356,7 @@ class UserInterface():
         """Start the user interface and call Tk::mainloop()"""
         self.auth_after_id = self.root.after(100, self.refresh_auth)
         self.poll_after_id = self.root.after(self.poll_period, self.run_periodically)
+        
         self.root.mainloop()
 
 
