@@ -1,0 +1,22 @@
+{
+    "countdown_before_snap": 5, 
+    "countdown_inter_snap": 3, 
+    "email_body": "Greetings, here's your photo sent from the photobooth\n", 
+    "email_subject": "Here's your photo!", 
+    "enable_effects": false, 
+    "enable_email": false, 
+    "enable_email_logging": false, 
+    "enable_hardware_buttons": true, 
+    "enable_print": false, 
+    "enable_upload": false, 
+    "full_screen": true, 
+    "gmail_user": "None", 
+    "google_photo_album_id": "None", 
+    "google_photo_album_name": "Drop Box", 
+    "local_archive": true, 
+    "local_archive_dir": "../Photos", 
+    "local_mp3_dir": "../mp3", 
+    "logo_file": null, 
+    "selected_printer": "Canon_SELPHY_CP1300", 
+    "snap_caption": ""
+}

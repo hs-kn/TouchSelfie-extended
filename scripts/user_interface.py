@@ -501,13 +501,23 @@ class UserInterface():
                 h_ = h * 2
                 # take 4 photos and merge into one image.
                 self.__show_countdown(config.countdown1,annotate_size = 80)
+                subprocess.Popen (['omxplayer', '-o' 'local', "./ressources/cam_shutter.mp3"], stdout=subprocess.PIPE, stderr=subprocess.STDOUT, universal_newlines=True, preexec_fn=os.setsid)                
                 self.camera.capture('collage_1.jpg')
+                time.sleep(0.7)
+                
                 self.__show_countdown(config.countdown2,annotate_size = 80)
+                subprocess.Popen (['omxplayer', '-o' 'local', "./ressources/cam_shutter.mp3"], stdout=subprocess.PIPE, stderr=subprocess.STDOUT, universal_newlines=True, preexec_fn=os.setsid)
                 self.camera.capture('collage_2.jpg')
+                time.sleep(0.7)
+                
                 self.__show_countdown(config.countdown2,annotate_size = 80)
+                subprocess.Popen (['omxplayer', '-o' 'local', "./ressources/cam_shutter.mp3"], stdout=subprocess.PIPE, stderr=subprocess.STDOUT, universal_newlines=True, preexec_fn=os.setsid)                
                 self.camera.capture('collage_3.jpg')
+                time.sleep(0.7)
+                
                 self.__show_countdown(config.countdown2,annotate_size = 80)
-                self.camera.capture('collage_4.jpg')
+                subprocess.Popen (['omxplayer', '-o' 'local', "./ressources/cam_shutter.mp3"], stdout=subprocess.PIPE, stderr=subprocess.STDOUT, universal_newlines=True, preexec_fn=os.setsid)
+                self.camera.capture('collage_4.jpg')                
                 # Assemble collage
                 self.camera.stop_preview()
                 self.status("Assembling collage")
@@ -671,8 +681,7 @@ class UserInterface():
         #preview_width = bbox[2]
         #preview_height = bbox[3]
         #preview_size = self.camera.resolution
-
-
+        
         screen_width = self.root.winfo_screenwidth()
         screen_height = self.root.winfo_screenheight()
 
@@ -719,8 +728,9 @@ class UserInterface():
             ## Add overlay to image
             overlay = None
             if overlay_image != None:
+                subprocess.Popen (['omxplayer', '-o' 'local', "./ressources/countdown.mp3"], stdout=subprocess.PIPE, stderr=subprocess.STDOUT, universal_newlines=True, preexec_fn=os.setsid)                             
                 #create overlay
-                overlay = self.camera.add_overlay(overlay_image.tobytes(), size=overlay_image.size)
+                overlay = self.camera.add_overlay(overlay_image.tobytes(), size=overlay_image.size)                
                 #move it on top of preview
                 overlay.layer = 3
                 #change transparency
@@ -1005,3 +1015,4 @@ if __name__ == '__main__':
     ui = UserInterface(config,window_size=(SCREEN_W, SCREEN_H))
 
     ui.start_ui()
+s
