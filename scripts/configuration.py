@@ -17,14 +17,14 @@ class Configuration():
     emailSubject = "Here's your photo!" # subject line of the email sent from the photobooth
     emailMsg     = "Greetings, here's your photo sent from the photobooth" # Brief body of the message sent from the photobooth
     full_screen  = True #Start application in full screen
-    enable_email  = True #Enable the 'send email" feature
-    enable_upload = True #Enable the upload feature
+    enable_email  = False #Enable the 'send email" feature
+    enable_upload = False #Enable the upload feature
     enable_print = False #Enable the printer feature
-    enable_effects = True
+    enable_effects = False
     selected_printer = None #No printer select
     enable_hardware_buttons = False #Enable hardware buttons
     enable_email_logging = False # Should we log outgoing emails?
-    mp3_dir = None # added a dir with mp3s to play a random file
+    mp3_dir = os.path.join("..","mp3") # added a dir with mp3s to play a random file
 
 
     #init

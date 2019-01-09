@@ -12,7 +12,7 @@ RPI_GPIO_EXISTS = True
 BUTTONS_PINS = [26]
 BUTTONS_MODE = "pull_down"
 BUTTON_IS_ACTIVE = 1
-MP3_DIR = "/home/pi/workspace/TouchSelfie-extended/mp3/"
+MP3_DIR = "/home/pi/photobooth/TouchSelfie-extended/mp3/"
 
 try:
     import RPi.GPIO as GPIO
@@ -62,7 +62,7 @@ class Buttons():
             logger.info("Setup Pins")
             
             for pin in self.buttons_pins:
-            	logger.info("Setup Pin %d" % pin)
+                logger.info("Setup Pin %d" % pin)
                 GPIO.setup(pin, GPIO.IN, pull_up_down = self.mode)
             if len(buttons_pins) != 0:
                 self._has_buttons = True
@@ -127,25 +127,26 @@ if __name__ == '__main__':
         print "No button configured (no access to GPIO or empty button list)"
         print "Number of buttons is %d" % buttons.buttons_number()
         sys.exit()
-	
+    
     while True:
         state = buttons.state()
-			        
+                    
         if last != state:
             print "new state: %d"%state
             if state == 1:
-            		if proc != None & proc.poll() != 0:
-            			logger.info("Kill process")
-            			logger.info("Process state " + str( proc.poll() ))
-            			subprocess.call(['killall', '/usr/bin/omxplayer.bin'])
-            			
-            		randomfile = random.choice(os.listdir(MP3_DIR))
-            		mp3file =  MP3_DIR +  randomfile
-            		logger.info("Playing: " + mp3file)
-            		proc = subprocess.Popen (['omxplayer', '-o' 'local', mp3file], stdout=subprocess.PIPE, stderr=subprocess.STDOUT, universal_newlines=True, preexec_fn=os.setsid)			            		
-            		
+                    if proc != None:
+                        if proc.poll() != 0:
+                            logger.info("Kill process")
+                            logger.info("Process state " + str( proc.poll() ))
+                            subprocess.call(['killall', '/usr/bin/omxplayer.bin'])
+                        
+                    randomfile = random.choice(os.listdir(MP3_DIR))
+                    mp3file =  MP3_DIR +  randomfile
+                    logger.info("Playing: " + mp3file)
+                    proc = subprocess.Popen (['omxplayer', '-o' 'local', mp3file], stdout=subprocess.PIPE, stderr=subprocess.STDOUT, universal_newlines=True, preexec_fn=os.setsid)                             
+                    
             last = state
         time.sleep(0.1)
         
 
-	
+    

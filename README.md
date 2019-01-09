@@ -77,6 +77,7 @@ sudo update-alternatives --config x-www-browser
   - captured image sizes
   - hardware dependent things
 
-
-
+### GPIO Pins
+Pin 38 - Make photo
+Pin 26 - Play Music
 

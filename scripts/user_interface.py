@@ -363,7 +363,7 @@ class UserInterface():
         """SCREEN_H,SCREEN_W"""
 
         # Logo in the lower right corner
-        logo_image = Image.open("/home/pi/workspace/TouchSelfie-extended/scripts/ressources/logo_fh_600.png")               
+        logo_image = Image.open("/home/pi/photobooth/TouchSelfie-extended/scripts/ressources/logo_fh_600.png")               
         self.logo_imagetk = ImageTk.PhotoImage(self.resize_image(logo_image, 100))
         self.logo_lbl = Label(self.root, image=self.logo_imagetk, borderwidth=0)
         self.logo_lbl.place(x=5, y= SCREEN_H - 100)
@@ -379,7 +379,7 @@ class UserInterface():
         self.warn_lbl.place(x=SCREEN_W/2-140, y= 160)
         
         # Image
-        welcome_image = Image.open("/home/pi/workspace/TouchSelfie-extended/scripts/ressources/welcome_r.jpg")        
+        welcome_image = Image.open("/home/pi/photobooth/TouchSelfie-extended/scripts/ressources/welcome_r.jpg")        
         self.welcome_imagetk = ImageTk.PhotoImage(self.resize_image(welcome_image, 260))
         self.welcome_img_lbl = Label(self.root, image=self.welcome_imagetk, borderwidth=0)
         self.welcome_img_lbl.place(x=SCREEN_W-320 , y= SCREEN_H - 290 )        
@@ -420,7 +420,7 @@ class UserInterface():
             if btn_state == 1:
                 self.hide_welcome_screen()
                 self.snap("Four")                                                
-                self.send_print()					                   
+                self.send_print()                                      
             elif btn_state == 2:
                  self.snap("None")            
             elif btn_state == 3:
@@ -535,7 +535,7 @@ class UserInterface():
                 snap_filename = 'collage.jpg'
                 self.last_picture_mime_type = 'image/jpg'
 
-					#TODO Print 
+                    #TODO Print 
 
             elif mode == 'Animation':
                 # animated gifs
@@ -832,15 +832,16 @@ class UserInterface():
         self.show_message("Printing... Please wait")
         try:
             conn = cups.Connection()
-            printers = conn.getPrinters()
-            print self.selected_printer
-            default_printer = printers.keys()[self.selected_printer]#defaults to the first printer installed
-            cups.setUser(getpass.getuser())
-            conn.printFile(default_printer, self.last_picture_filename, self.last_picture_title, {'fit-to-page':'True'})
+            #printers = conn.getPrinters()
+            #print self.selected_printer
+            #default_printer = printers.keys()[self.selected_printer]#defaults to the first printer installed
+            #cups.setUser(getpass.getuser())
+            conn.printFile(self.selected_printer, self.last_picture_filename, self.last_picture_title, {'fit-to-page':'True'})
             print 'Sending to printer...'
             time.sleep(20)            
             self.show_message("")
         except:
+            self.show_message("Print failed")
             print 'print failed :: '
             self.status("Print failed :(")
             self.status("")
